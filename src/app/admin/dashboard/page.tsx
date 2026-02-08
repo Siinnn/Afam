@@ -12,6 +12,10 @@ import { Trash2, Plus, Loader2 } from 'lucide-react';
 
 const articleSchema = z.object({
   title: z.string().min(3, 'Le titre doit contenir au moins 3 caractères'),
+  category: z.enum(['Actualité', 'Événement', 'Projet'], {
+    errorMap: () => ({ message: 'Veuillez sélectionner une catégorie' }),
+  }),
+  excerpt: z.string().optional(),
   content: z.string().min(10, 'Le contenu doit contenir au moins 10 caractères'),
   event_date: z.string().optional(),
   image_url: z.string().url('URL invalide').optional().or(z.literal('')),
@@ -23,6 +27,8 @@ interface Article {
   id: string;
   title: string;
   content: string;
+  category: string | null;
+  excerpt: string | null;
   event_date: string | null;
   image_url: string | null;
   created_at: string;
@@ -52,8 +58,12 @@ function DashboardContent() {
     formState: { errors },
     reset,
     setValue,
+    watch,
   } = useForm<ArticleFormData>({
     resolver: zodResolver(articleSchema),
+    defaultValues: {
+      category: 'Actualité',
+    }
   });
 
   // Vérifier l'accès admin
@@ -103,6 +113,9 @@ function DashboardContent() {
     setEditingId(article.id);
     setValue('title', article.title);
     setValue('content', article.content);
+    // @ts-ignore - category might not match enum exactly if data is old, but default is "Actualité"
+    setValue('category', article.category || 'Actualité');
+    setValue('excerpt', article.excerpt || '');
     if (article.event_date) {
       setValue('event_date', new Date(article.event_date).toISOString().split('T')[0]);
     } else {
@@ -126,9 +139,11 @@ function DashboardContent() {
     const postData = {
       title: data.title,
       content: data.content,
+      category: data.category,
+      excerpt: data.excerpt,
       event_date: data.event_date ? new Date(data.event_date).toISOString() : null,
       image_url: data.image_url || null,
-      is_event: !!data.event_date,
+      is_event: data.category === 'Événement' || !!data.event_date,
       // Only set author_id on insert, not update (optional choice, but usually author doesn't change)
       // author_id: user?.id, 
     };
@@ -234,26 +249,72 @@ function DashboardContent() {
             </h2>
 
             <form onSubmit={handleSubmit(onSubmit)} className="space-y-4">
+              <div className="grid grid-cols-2 gap-4">
+                <div className="col-span-2">
+                  <label htmlFor="title" className="block text-sm font-medium text-gray-700 mb-2">
+                    Titre *
+                  </label>
+                  <input
+                    type="text"
+                    id="title"
+                    {...register('title')}
+                    className={`w-full px-4 py-2 border rounded-lg focus:ring-2 focus:ring-emerald-500 focus:border-emerald-500 ${errors.title ? 'border-red-300' : 'border-gray-300'
+                      }`}
+                    placeholder="Titre de l'article"
+                  />
+                  {errors.title && (
+                    <p className="mt-1 text-sm text-red-600">{errors.title.message}</p>
+                  )}
+                </div>
+
+                <div className="col-span-1">
+                  <label htmlFor="category" className="block text-sm font-medium text-gray-700 mb-2">
+                    Catégorie *
+                  </label>
+                  <select
+                    id="category"
+                    {...register('category')}
+                    className={`w-full px-4 py-2 border rounded-lg focus:ring-2 focus:ring-emerald-500 focus:border-emerald-500 ${errors.category ? 'border-red-300' : 'border-gray-300'
+                      }`}
+                  >
+                    <option value="Actualité">Actualité</option>
+                    <option value="Événement">Événement</option>
+                    <option value="Projet">Projet</option>
+                  </select>
+                  {errors.category && (
+                    <p className="mt-1 text-sm text-red-600">{errors.category.message}</p>
+                  )}
+                </div>
+
+                <div className="col-span-1">
+                  <label htmlFor="event_date" className="block text-sm font-medium text-gray-700 mb-2">
+                    Date de l'événement
+                  </label>
+                  <input
+                    type="date"
+                    id="event_date"
+                    {...register('event_date')}
+                    className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-emerald-500 focus:border-emerald-500"
+                  />
+                </div>
+              </div>
+
               <div>
-                <label htmlFor="title" className="block text-sm font-medium text-gray-700 mb-2">
-                  Titre *
+                <label htmlFor="excerpt" className="block text-sm font-medium text-gray-700 mb-2">
+                  Résumé (court extrait)
                 </label>
-                <input
-                  type="text"
-                  id="title"
-                  {...register('title')}
-                  className={`w-full px-4 py-2 border rounded-lg focus:ring-2 focus:ring-emerald-500 focus:border-emerald-500 ${errors.title ? 'border-red-300' : 'border-gray-300'
-                    }`}
-                  placeholder="Titre de l'article"
+                <textarea
+                  id="excerpt"
+                  {...register('excerpt')}
+                  rows={2}
+                  className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-emerald-500 focus:border-emerald-500"
+                  placeholder="Bref résumé de l'article..."
                 />
-                {errors.title && (
-                  <p className="mt-1 text-sm text-red-600">{errors.title.message}</p>
-                )}
               </div>
 
               <div>
                 <label htmlFor="content" className="block text-sm font-medium text-gray-700 mb-2">
-                  Contenu *
+                  Contenu détaillé *
                 </label>
                 <textarea
                   id="content"
@@ -261,23 +322,11 @@ function DashboardContent() {
                   rows={6}
                   className={`w-full px-4 py-2 border rounded-lg focus:ring-2 focus:ring-emerald-500 focus:border-emerald-500 ${errors.content ? 'border-red-300' : 'border-gray-300'
                     }`}
-                  placeholder="Contenu de l'article..."
+                  placeholder="Contenu complet de l'article..."
                 />
                 {errors.content && (
                   <p className="mt-1 text-sm text-red-600">{errors.content.message}</p>
                 )}
-              </div>
-
-              <div>
-                <label htmlFor="event_date" className="block text-sm font-medium text-gray-700 mb-2">
-                  Date de l'événement (optionnel)
-                </label>
-                <input
-                  type="date"
-                  id="event_date"
-                  {...register('event_date')}
-                  className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-emerald-500 focus:border-emerald-500"
-                />
               </div>
 
               <div>
@@ -346,7 +395,19 @@ function DashboardContent() {
                       }`}
                   >
                     <div className="flex items-start justify-between mb-2">
-                      <h3 className="font-bold text-gray-900 flex-1">{article.title}</h3>
+                      <div className="flex-1">
+                        <div className="flex items-center gap-2 mb-1">
+                          <span className="text-xs font-semibold px-2 py-1 bg-emerald-100 text-emerald-800 rounded-full">
+                            {article.category || 'Général'}
+                          </span>
+                          {article.event_date && (
+                            <span className="text-xs text-gray-500">
+                              📅 {new Date(article.event_date).toLocaleDateString('fr-FR')}
+                            </span>
+                          )}
+                        </div>
+                        <h3 className="font-bold text-gray-900">{article.title}</h3>
+                      </div>
                       <div className="flex space-x-1 ml-4">
                         <button
                           onClick={() => handleEdit(article)}
@@ -364,14 +425,11 @@ function DashboardContent() {
                         </button>
                       </div>
                     </div>
-                    <p className="text-sm text-gray-600 line-clamp-2 mb-2">{article.content}</p>
-                    {article.event_date && (
-                      <p className="text-xs text-gray-500">
-                        Date: {new Date(article.event_date).toLocaleDateString('fr-FR')}
-                      </p>
-                    )}
+                    <p className="text-sm text-gray-600 line-clamp-2 mb-2">
+                      {article.excerpt || article.content}
+                    </p>
                     <p className="text-xs text-gray-400 mt-2">
-                      Créé le {new Date(article.created_at).toLocaleDateString('fr-FR')}
+                      Publié le {new Date(article.created_at).toLocaleDateString('fr-FR')}
                     </p>
                   </div>
                 ))}

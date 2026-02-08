@@ -16,7 +16,7 @@ const geistMono = Geist_Mono({
 
 export const metadata: Metadata = {
   title: "AFAM Mutsamudu - Association pour le développement communautaire",
-  description: "Association AFAM à Mutsamudu, dédiée au développement communautaire, à la préservation de la culture et à l'épanouissement de la jeunesse comorienne.",
+  description: "L'association des femmes actives de Mutsamudu (A.F.A.M) est une ONG qui lutte principalement contre la pollution des déchets.",
 };
 
 export default function RootLayout({

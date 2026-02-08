@@ -39,15 +39,34 @@ export default function SignupPage() {
         setIsSubmitting(true);
         setError(null);
 
-        const { error } = await signUp(data.email, data.password, data.username);
+        // @ts-ignore - updated signature in AuthContext
+        const { error, data: authData } = await signUp(data.email, data.password, data.username);
 
         if (error) {
-            setError(error.message || 'Une erreur est survenue lors de l\'inscription.');
+            if (error.message.includes('rate limit')) {
+                setError('Trop de tentatives d\'inscription. Veuillez patienter quelques minutes avant de réessayer.');
+            } else {
+                setError(error.message || 'Une erreur est survenue lors de l\'inscription.');
+            }
             setIsSubmitting(false);
-        } else {
-            router.push('/');
-            router.refresh();
+            return;
         }
+
+        if (authData?.user && !authData.session) {
+            // Utilisateur créé mais pas de session => Email confirmation requise
+            setError('Compte créé ! Veuillez vérifier vos emails pour confirmer votre inscription avant de vous connecter.');
+            setIsSubmitting(false);
+            return;
+        }
+
+        if (!authData?.user) {
+            setError('Erreur inattendue : aucun utilisateur créé.');
+            setIsSubmitting(false);
+            return;
+        }
+
+        router.push('/');
+        router.refresh();
     };
 
     return (

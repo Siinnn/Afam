@@ -65,7 +65,9 @@ export default function Navbar() {
             <div className="flex items-center space-x-4">
               <div className="hidden sm:flex items-center space-x-2 text-gray-700">
                 <User size={18} />
-                <span className="text-sm">{user.email?.replace('@afam.com', '')}</span>
+                <span className="text-sm font-medium">
+                  {user.user_metadata?.username || user.email?.split('@')[0]}
+                </span>
               </div>
               <button
                 onClick={handleSignOut}

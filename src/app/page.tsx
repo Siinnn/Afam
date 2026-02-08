@@ -17,7 +17,7 @@ export default async function Home() {
     .limit(3);
 
   return (
-    <div className="min-h-screen bg-gradient-to-b from-emerald-50 to-white">
+    <main className="min-h-screen bg-gradient-to-b from-emerald-50 to-white">
       {/* Section Hero */}
       <section className="relative overflow-hidden">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-20 lg:py-32">
@@ -27,8 +27,13 @@ export default async function Home() {
               <span className="block text-emerald-600 mt-2">Mutsamudu</span>
             </h1>
             <p className="text-xl text-gray-600 max-w-3xl mx-auto mb-8 leading-relaxed">
-              Une association dédiée au développement communautaire, à la préservation de notre
-              culture et à l&apos;épanouissement de la jeunesse comorienne à Mutsamudu.
+              L'association des femmes actives de Mutsamudu (A.F.A.M) est une ONG qui lutte principalement contre la pollution des déchets.
+
+              AFAM-PROTÉGEONS NOTRE ÎLE🏝️ PRÉSERVONS NOTRE AVENIR🐾
+
+              🌿Ensemble contre la pollution, pour un Mutsamudu propre et durable 🌍
+
+
             </p>
             <div className="flex flex-col sm:flex-row gap-4 justify-center">
               <Link
@@ -57,7 +62,7 @@ export default async function Home() {
           <div className="lg:col-span-2 space-y-12">
             <div className="flex items-center justify-between">
               <h2 className="text-3xl font-bold text-gray-900">Dernières actualités</h2>
-              <Link href="/posts" className="text-emerald-600 hover:text-emerald-700 font-medium hidden sm:block">
+              <Link href="/posts?category=Actualité" className="text-emerald-600 hover:text-emerald-700 font-medium hidden sm:block">
                 Voir tous les articles →
               </Link>
             </div>
@@ -75,7 +80,7 @@ export default async function Home() {
             </div>
 
             <div className="text-center sm:hidden mt-6">
-              <Link href="/posts" className="text-emerald-600 hover:text-emerald-700 font-medium">
+              <Link href="/posts?category=Actualité" className="text-emerald-600 hover:text-emerald-700 font-medium">
                 Voir tous les articles →
               </Link>
             </div>
@@ -86,18 +91,7 @@ export default async function Home() {
             <div className="sticky top-24">
               <FacebookFeed />
 
-              <div className="mt-8 bg-emerald-50 p-6 rounded-lg border border-emerald-100">
-                <h3 className="font-bold text-emerald-900 mb-2">Devenir membre</h3>
-                <p className="text-emerald-700 text-sm mb-4">
-                  Soutenez nos actions et participez au développement de Mutsamudu.
-                </p>
-                <Link
-                  href="/contact"
-                  className="block w-full text-center px-4 py-2 bg-emerald-600 text-white rounded hover:bg-emerald-700 transition-colors text-sm font-medium"
-                >
-                  Nous rejoindre
-                </Link>
-              </div>
+
             </div>
           </div>
 
@@ -122,6 +116,6 @@ export default async function Home() {
 
       {/* Test de connexion Supabase */}
       <SupabaseConnectionTest />
-    </div>
+    </main>
   );
 }

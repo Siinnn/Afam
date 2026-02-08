@@ -55,7 +55,8 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
 
   const signUp = async (email: string, password: string, username: string) => {
     try {
-      const { error } = await supabase.auth.signUp({
+      console.log('Tentative d\'inscription pour:', email);
+      const { data, error } = await supabase.auth.signUp({
         email,
         password,
         options: {
@@ -65,13 +66,16 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
         },
       });
 
+      console.log('Réponse Supabase signUp:', { data, error });
+
       if (error) {
-        return { error };
+        return { error, data: null };
       }
 
-      return { error: null };
+      return { error: null, data };
     } catch (error) {
-      return { error: error as Error };
+      console.error('Erreur inattendue signUp:', error);
+      return { error: error as Error, data: null };
     }
   };
 
