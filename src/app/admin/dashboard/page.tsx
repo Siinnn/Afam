@@ -30,7 +30,9 @@ interface Article {
 
 import { useSearchParams } from 'next/navigation';
 
-export default function AdminDashboard() {
+import { Suspense } from 'react';
+
+function DashboardContent() {
   const router = useRouter();
   const searchParams = useSearchParams();
   const editId = searchParams.get('edit');
@@ -379,5 +381,19 @@ export default function AdminDashboard() {
         </div>
       </div>
     </div>
+  );
+}
+
+export default function AdminDashboard() {
+  return (
+    <Suspense
+      fallback={
+        <div className="min-h-screen bg-gradient-to-b from-emerald-50 to-white flex items-center justify-center">
+          <Loader2 className="animate-spin text-emerald-600" size={32} />
+        </div>
+      }
+    >
+      <DashboardContent />
+    </Suspense>
   );
 }
