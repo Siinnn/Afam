@@ -12,9 +12,7 @@ import { Trash2, Plus, Loader2 } from 'lucide-react';
 
 const articleSchema = z.object({
   title: z.string().min(3, 'Le titre doit contenir au moins 3 caractères'),
-  category: z.enum(['Actualité', 'Événement', 'Projet'], {
-    errorMap: () => ({ message: 'Veuillez sélectionner une catégorie' }),
-  }),
+  category: z.enum(['Actualité', 'Événement', 'Projet']),
   excerpt: z.string().optional(),
   content: z.string().min(10, 'Le contenu doit contenir au moins 10 caractères'),
   event_date: z.string().optional(),
