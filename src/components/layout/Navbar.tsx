@@ -63,12 +63,12 @@ export default function Navbar() {
             <div className="px-4 py-2 text-gray-400">Chargement...</div>
           ) : user ? (
             <div className="flex items-center space-x-4">
-              <div className="hidden sm:flex items-center space-x-2 text-gray-700">
+              <Link href="/profile" className="hidden sm:flex items-center space-x-2 text-gray-700 hover:text-emerald-600 transition-colors">
                 <User size={18} />
                 <span className="text-sm font-medium">
                   {user.user_metadata?.username || user.email?.split('@')[0]}
                 </span>
-              </div>
+              </Link>
               <button
                 onClick={handleSignOut}
                 className="flex items-center space-x-2 px-4 py-2 bg-gray-100 text-gray-700 rounded-lg hover:bg-gray-200 transition-colors font-medium"
@@ -96,9 +96,14 @@ export default function Navbar() {
               Événements
             </Link>
             {user ? (
-              <button onClick={handleSignOut} className="p-2 text-emerald-600">
-                <LogOut size={20} />
-              </button>
+              <>
+                <Link href="/profile" className="p-2 text-gray-700 hover:text-emerald-600">
+                  <User size={20} />
+                </Link>
+                <button onClick={handleSignOut} className="p-2 text-emerald-600">
+                  <LogOut size={20} />
+                </button>
+              </>
             ) : (
               <Link href="/login" className="p-2 text-emerald-600">
                 <LogIn size={20} />
