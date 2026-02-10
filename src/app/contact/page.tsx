@@ -55,7 +55,7 @@ export default function ContactPage() {
                   </div>
                   <div className="ml-4">
                     <h3 className="font-semibold text-gray-900 mb-1">Email</h3>
-                    <p className="text-gray-600">contact@afam-mutsamudu.org</p>
+                    <p className="text-gray-600">afammutsamudu@gmail.com</p>
                   </div>
                 </div>
 
@@ -65,7 +65,7 @@ export default function ContactPage() {
                   </div>
                   <div className="ml-4">
                     <h3 className="font-semibold text-gray-900 mb-1">Téléphone</h3>
-                    <p className="text-gray-600">+269 XXX XX XX</p>
+                    <p className="text-gray-600">+269 332 14 15</p>
                   </div>
                 </div>
               </div>
@@ -89,7 +89,7 @@ export default function ContactPage() {
             </p>
 
             <a
-              href="https://wa.me/269XXXXXXX"
+              href="https://wa.me/2693321415"
               target="_blank"
               rel="noopener noreferrer"
               className="flex items-center justify-center w-full px-6 py-4 bg-[#25D366] text-white rounded-lg hover:bg-[#20bd5a] transition-colors font-medium text-lg"
