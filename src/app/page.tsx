@@ -3,7 +3,7 @@ export const revalidate = 60;
 
 import Link from 'next/link';
 import { Calendar, ArrowRight } from 'lucide-react';
-import SupabaseConnectionTest from '@/components/SupabaseConnectionTest';
+
 import { supabase } from '@/lib/supabase';
 import FacebookFeed from '@/components/FacebookFeed';
 import PostCard from '@/components/PostCard';
@@ -114,8 +114,7 @@ export default async function Home() {
         </div>
       </section>
 
-      {/* Test de connexion Supabase */}
-      <SupabaseConnectionTest />
+
     </main>
   );
 }

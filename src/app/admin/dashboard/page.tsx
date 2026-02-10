@@ -111,8 +111,7 @@ function DashboardContent() {
     setEditingId(article.id);
     setValue('title', article.title);
     setValue('content', article.content);
-    // @ts-ignore - category might not match enum exactly if data is old, but default is "Actualité"
-    setValue('category', article.category || 'Actualité');
+    setValue('category', (article.category || 'Actualité') as any);
     setValue('excerpt', article.excerpt || '');
     if (article.event_date) {
       setValue('event_date', new Date(article.event_date).toISOString().split('T')[0]);
@@ -120,7 +119,6 @@ function DashboardContent() {
       setValue('event_date', '');
     }
     setValue('image_url', article.image_url || '');
-    // Scroll to top to see the form
     window.scrollTo({ top: 0, behavior: 'smooth' });
   };
 

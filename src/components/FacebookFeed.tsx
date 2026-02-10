@@ -10,26 +10,20 @@ export default function FacebookFeed() {
     const containerRef = useRef<HTMLDivElement>(null);
     const [width, setWidth] = React.useState(340);
 
-    // Ajuster la largeur de l'iframe en fonction du conteneur
     useEffect(() => {
         const handleResize = () => {
             if (containerRef.current) {
-                // Facebook plugin min width is 180, max is 500
                 const newWidth = Math.min(500, Math.max(180, containerRef.current.clientWidth));
                 setWidth(newWidth);
             }
         };
 
-        handleResize(); // Initial call
+        handleResize();
         window.addEventListener('resize', handleResize);
         return () => window.removeEventListener('resize', handleResize);
     }, []);
-
-    // L'URL de la page Facebook
-    // Note: Pour les nouvelles pages "Expérience", il faut souvent utiliser l'ID ou le format spécifique
     const pageUrl = "https://www.facebook.com/profile.php?id=100088315476380";
 
-    // Construction de l'URL de l'iframe
     const iframeSrc = `https://www.facebook.com/plugins/page.php?href=${encodeURIComponent(pageUrl)}&tabs=timeline&width=${width}&height=600&small_header=false&adapt_container_width=true&hide_cover=false&show_facepile=true`;
 
     return (
