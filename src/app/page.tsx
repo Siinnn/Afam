@@ -21,12 +21,12 @@ export default async function Home() {
       {/* Section Hero */}
       <section className="relative overflow-hidden">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-20 lg:py-32">
-          <div className="text-center">
+          <div className="text-left sm:text-center">
             <h1 className="text-4xl sm:text-5xl lg:text-6xl font-bold text-gray-900 mb-6">
               Association AFAM
               <span className="block text-emerald-600 mt-2">Mutsamudu</span>
             </h1>
-            <p className="text-xl text-gray-600 max-w-3xl mx-auto mb-8 leading-relaxed">
+            <p className="text-xl text-gray-600 sm:max-w-3xl sm:mx-auto mb-8 leading-relaxed">
               L'association des femmes actives de Mutsamudu (A.F.A.M) est une ONG qui lutte principalement contre la pollution des déchets.
 
               AFAM-PROTÉGEONS NOTRE ÎLE🏝️ PRÉSERVONS NOTRE AVENIR🐾
@@ -35,17 +35,17 @@ export default async function Home() {
 
 
             </p>
-            <div className="flex flex-col sm:flex-row gap-4 justify-center">
+            <div className="flex flex-col sm:flex-row gap-4 justify-start sm:justify-center">
               <Link
                 href="/events"
-                className="inline-flex items-center justify-center px-8 py-3 bg-emerald-600 text-white rounded-lg hover:bg-emerald-700 transition-colors font-medium text-lg"
+                className="inline-flex items-center justify-center px-8 py-3 bg-emerald-600 text-white rounded-lg hover:bg-emerald-700 transition-colors font-medium text-lg w-full sm:w-auto"
               >
                 Découvrir nos événements
                 <ArrowRight className="ml-2" size={20} />
               </Link>
               <Link
                 href="/contact"
-                className="inline-flex items-center justify-center px-8 py-3 bg-white text-emerald-600 border-2 border-emerald-600 rounded-lg hover:bg-emerald-50 transition-colors font-medium text-lg"
+                className="inline-flex items-center justify-center px-8 py-3 bg-white text-emerald-600 border-2 border-emerald-600 rounded-lg hover:bg-emerald-50 transition-colors font-medium text-lg w-full sm:w-auto"
               >
                 Nous contacter
               </Link>
@@ -115,6 +115,6 @@ export default async function Home() {
       </section>
 
 
-    </main>
+    </main >
   );
 }

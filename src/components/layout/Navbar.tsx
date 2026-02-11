@@ -59,33 +59,36 @@ export default function Navbar() {
           </div>
 
           {/* Bouton Connexion/Déconnexion */}
-          {loading ? (
-            <div className="px-4 py-2 text-gray-400">Chargement...</div>
-          ) : user ? (
-            <div className="flex items-center space-x-4">
-              <Link href="/profile" className="hidden sm:flex items-center space-x-2 text-gray-700 hover:text-emerald-600 transition-colors">
-                <User size={18} />
-                <span className="text-sm font-medium">
-                  {user.user_metadata?.username || user.email?.split('@')[0]}
-                </span>
-              </Link>
-              <button
-                onClick={handleSignOut}
-                className="flex items-center space-x-2 px-4 py-2 bg-gray-100 text-gray-700 rounded-lg hover:bg-gray-200 transition-colors font-medium"
+          {/* Bouton Connexion/Déconnexion (Desktop uniquement) */}
+          <div className="hidden md:flex items-center">
+            {loading ? (
+              <div className="px-4 py-2 text-gray-400">Chargement...</div>
+            ) : user ? (
+              <div className="flex items-center space-x-4">
+                <Link href="/profile" className="flex items-center space-x-2 text-gray-700 hover:text-emerald-600 transition-colors">
+                  <User size={18} />
+                  <span className="text-sm font-medium">
+                    {user.user_metadata?.username || user.email?.split('@')[0]}
+                  </span>
+                </Link>
+                <button
+                  onClick={handleSignOut}
+                  className="flex items-center space-x-2 px-4 py-2 bg-gray-100 text-gray-700 rounded-lg hover:bg-gray-200 transition-colors font-medium"
+                >
+                  <LogOut size={18} />
+                  <span>Déconnexion</span>
+                </button>
+              </div>
+            ) : (
+              <Link
+                href="/login"
+                className="flex items-center space-x-2 px-4 py-2 bg-emerald-600 text-white rounded-lg hover:bg-emerald-700 transition-colors font-medium"
               >
-                <LogOut size={18} />
-                <span className="hidden sm:inline">Déconnexion</span>
-              </button>
-            </div>
-          ) : (
-            <Link
-              href="/login"
-              className="flex items-center space-x-2 px-4 py-2 bg-emerald-600 text-white rounded-lg hover:bg-emerald-700 transition-colors font-medium"
-            >
-              <LogIn size={18} />
-              <span>Connexion</span>
-            </Link>
-          )}
+                <LogIn size={18} />
+                <span>Connexion</span>
+              </Link>
+            )}
+          </div>
 
           {/* Menu mobile (simplifié) */}
           <div className="md:hidden flex items-center space-x-4">
@@ -95,6 +98,14 @@ export default function Navbar() {
             >
               Événements
             </Link>
+            {isAdmin && (
+              <Link
+                href="/admin/dashboard"
+                className="text-emerald-600 hover:text-emerald-700 font-medium text-sm"
+              >
+                Admin
+              </Link>
+            )}
             {user ? (
               <>
                 <Link href="/profile" className="p-2 text-gray-700 hover:text-emerald-600">

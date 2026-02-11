@@ -24,16 +24,20 @@ export function useRole() {
           .from('profiles')
           .select('role')
           .eq('id', user.id)
-          .single();
+          .maybeSingle(); // Utilise maybeSingle pour éviter l'erreur 406 si aucune ligne n'est trouvée
 
         if (error) {
           console.error('Erreur lors de la récupération du rôle:', error);
           setRole(null);
+        } else if (data) {
+          setRole((data.role as 'admin' | 'user') || 'user');
         } else {
-          setRole((data?.role as 'admin' | 'user') || 'user');
+          // Si aucune donnée n'est trouvée (profil manquant), on considère l'utilisateur comme normal
+          console.warn('Aucun profil trouvé pour cet utilisateur, rôle par défaut: user');
+          setRole('user');
         }
       } catch (error) {
-        console.error('Erreur:', error);
+        console.error('Erreur inattendue lors de la récupération du rôle:', error);
         setRole(null);
       } finally {
         setLoading(false);

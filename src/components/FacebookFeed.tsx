@@ -8,7 +8,7 @@ import React, { useEffect, useRef } from 'react';
  */
 export default function FacebookFeed() {
     const containerRef = useRef<HTMLDivElement>(null);
-    const [width, setWidth] = React.useState(340);
+    const [width, setWidth] = React.useState(180);
 
     useEffect(() => {
         const handleResize = () => {
@@ -47,6 +47,7 @@ export default function FacebookFeed() {
                     width={width}
                     height="600"
                     style={{ border: 'none', overflow: 'hidden' }}
+                    className="max-w-full"
                     scrolling="no"
                     frameBorder="0"
                     allowFullScreen={true}
